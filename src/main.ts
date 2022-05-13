@@ -1,5 +1,6 @@
 function calculateBowlingScore(frames: string): number {
-  return frames.split(' ')
+  return frames.replaceAll('-', '0')
+    .split(' ')
     .flatMap((frame) => frame.split(''))
     .map(Number)
     .reduce((a, b) => a + b);

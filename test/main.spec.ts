@@ -15,4 +15,9 @@ describe('Bowling kata should', () => {
     const game = '52 52 52 52 52 52 52 52 52 52';
     expect(calculateBowlingScore(game) ).toBe(70);
   });
+
+  it('Correctly interpret misses', () => {
+    const game = '5- 5- 5- 5- 5- 5- 5- 5- 5- 5-';
+    expect(calculateBowlingScore(game) ).toBe(50);
+  });
 });
