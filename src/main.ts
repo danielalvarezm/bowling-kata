@@ -3,6 +3,7 @@ function calculateBowlingScore(frames: string): number {
     .split(' ')
     .flatMap((frame) => frame.split(''))
     .map((roll, index, frames) => interpretSpare(roll, index, frames))
+    .map((roll, index, frames) => interpretStrike(roll, index, frames))
     .map(Number)
     .reduce((a, b) => a + b);
 }
@@ -10,13 +11,18 @@ function calculateBowlingScore(frames: string): number {
 export {calculateBowlingScore};
 
 function interpretSpare(roll: string, index: number, frames: string[]): string {
-  if (roll === '/' && index < frames.length - 2) {
-    roll = (10 - Number(frames[index - 1]) + Number(frames[index + 1]))
-      .toString();
-  }
-  if (roll === '/') {
-    roll = (10 - Number(frames[index - 1])).toString();
+  const isRollSpare = roll === '/';
+  const isNotLastRoll = index < frames.length - 2;
+  if (isRollSpare) {
+    const calculusForSpareRoll = 10 - Number(frames[index - 1]);
+    const calculusOfSpareWithAdditionOfNextThrow =
+      calculusForSpareRoll + Number(frames[index + 1]);
+    return isNotLastRoll ?
+      calculusOfSpareWithAdditionOfNextThrow.toString() :
+      calculusForSpareRoll.toString();
   }
   return roll;
 }
+
+
 

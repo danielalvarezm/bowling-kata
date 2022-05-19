@@ -23,6 +23,18 @@ describe('Bowling kata should', () => {
 
   it('Correctly interpret spares', () => {
     const game = '5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/5';
+    const game2 = '53 54 32 5/ 5/ 5/ 5/ 5/ 36 54';
+
     expect(calculateBowlingScore(game)).toBe(150);
+    expect(calculateBowlingScore(game2)).toBe(113);
+  });
+
+  it('Correctly interpret strikes', () => {
+    const game = 'X X X X X X X X X X X X';
+    // const game2 = 'X 23 34 X X X X X X X X X';
+
+    expect(calculateBowlingScore(game)).toBe(300);
+    // expect(calculateBowlingScore(game2)).toBe(244);
   });
 });
+
