@@ -1,4 +1,5 @@
-import {calculateBowlingScore} from '../src/main';
+// eslint-disable-next-line object-curly-spacing
+import { calculateBowlingScore } from '../src/main';
 
 /**
  * TODO: Bowling kata
@@ -31,10 +32,22 @@ describe('Bowling kata should', () => {
 
   it('Correctly interpret strikes', () => {
     const game = 'X X X X X X X X X X X X';
-    // const game2 = 'X 23 34 X X X X X X X X X';
+    const game2 = 'X 23 34 X X X X X X X X X';
 
     expect(calculateBowlingScore(game)).toBe(300);
-    // expect(calculateBowlingScore(game2)).toBe(244);
+    expect(calculateBowlingScore(game2)).toBe(237);
+  });
+
+  it('Correctly interpret spares and strikes in the same game', () => {
+    const game = '24 X 3/ 4- 72 -4 81 -- 9/ 71';
+
+    expect(calculateBowlingScore(game)).toBe(91);
+  });
+
+  it('Correctly interprets complete failure game', () => {
+    const game = '-- -- -- -- -- -- -- -- -- --';
+
+    expect(calculateBowlingScore(game)).toBe(0);
   });
 });
 
