@@ -1,28 +1,53 @@
+/* eslint-disable max-len */
+
 function calculateBowlingScore(frames: string): number {
   return frames.replaceAll('-', '0')
     .split(' ')
     .flatMap((frame) => frame.split(''))
-    .map((roll, index, frames) => interpretSpare(roll, index, frames))
-    .map((roll, index, frames) => interpretStrike(roll, index, frames))
+    .map((roll, index, frames) => interpretSpecialShots(roll, index, frames))
     .map(Number)
     .reduce((a, b) => a + b);
 }
 
-export {calculateBowlingScore};
+export { calculateBowlingScore };
 
-function interpretSpare(roll: string, index: number, frames: string[]): string {
+function interpretSpecialShots(roll: string, index: number, frames: string[]): string {
   const isRollSpare = roll === '/';
-  const isNotLastRoll = index < frames.length - 2;
+  const isRollStrike = roll === 'X';
   if (isRollSpare) {
-    const calculusForSpareRoll = 10 - Number(frames[index - 1]);
-    const calculusOfSpareWithAdditionOfNextThrow =
-      calculusForSpareRoll + Number(frames[index + 1]);
-    return isNotLastRoll ?
-      calculusOfSpareWithAdditionOfNextThrow.toString() :
-      calculusForSpareRoll.toString();
+    return interpretSpare(index, frames);
+  }
+  if (isRollStrike) {
+    return interpretStrike(index, frames);
   }
   return roll;
 }
 
+function interpretSpare(index: number, frames: string[]): string {
+  const isNotLastRoll = index < frames.length - 2;
+  const calculusForSpareRoll = 10 - parseRollToPunctuation(frames[index - 1]);
+  const calculusOfSpareWithAdditionOfNextThrow =
+    calculusForSpareRoll + parseRollToPunctuation(frames[index + 1]);
+  return isNotLastRoll ?
+    calculusOfSpareWithAdditionOfNextThrow.toString() :
+    calculusForSpareRoll.toString();
+}
 
+function interpretStrike(index: number, frames: string[]): string {
+  const isNotLastRoll = index < frames.length - 2;
+  const calculusForStrikeRoll = 10;
+  const calculusOfSpareWithAdditionOfNextThrow =
+    calculusForStrikeRoll + parseRollToPunctuation(frames[index + 1]) + parseRollToPunctuation(frames[index + 2]);
+  const parseLastRoll = 0;
 
+  return isNotLastRoll ?
+    calculusOfSpareWithAdditionOfNextThrow.toString() :
+    parseLastRoll.toString();
+}
+
+function parseRollToPunctuation(roll: string): number {
+  if (roll === 'X') {
+    return 10;
+  }
+  return Number(roll);
+}
